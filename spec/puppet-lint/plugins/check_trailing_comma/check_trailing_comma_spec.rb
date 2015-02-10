@@ -24,6 +24,8 @@ describe 'trailing_comma' do
         file { '/tmp/bar':
            ensure => file;
         }
+
+        resources { 'sshkey': purge => true }
         EOS
       }
 
@@ -52,6 +54,8 @@ describe 'trailing_comma' do
         file { '/tmp/bar':
            ensure => file;
         }
+
+        resources { 'sshkey': purge => true }
         EOS
       }
 
@@ -95,6 +99,8 @@ describe 'trailing_comma' do
         file { '/tmp/bar':
            ensure => file;
         }
+
+        resources { 'sshkey': purge => true }
         EOS
       }
 
@@ -127,6 +133,8 @@ describe 'trailing_comma' do
         file { '/tmp/bar':
            ensure => file;
         }
+
+        resources { 'sshkey': purge => true }
         EOS
       }
 
@@ -159,6 +167,8 @@ describe 'trailing_comma' do
         file { '/tmp/bar':
            ensure => file;
         }
+
+        resources { 'sshkey': purge => true }
           EOS
         )
       end

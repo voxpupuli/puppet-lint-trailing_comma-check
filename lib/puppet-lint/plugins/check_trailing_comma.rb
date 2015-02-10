@@ -5,7 +5,8 @@ PuppetLint.new_check(:trailing_comma) do
       lbo_token = resource[:tokens][-1].prev_code_token
       if lbo_token && lbo_token.type != :COLON && \
                       resource[:tokens][-1].type != :SEMIC && \
-                      lbo_token.type != :COMMA
+                      lbo_token.type != :COMMA && \
+                      lbo_token.next_token.type == :NEWLINE
         notify :warning, {
           :message => 'missing trailing comma after last parameter',
           :line    => lbo_token.next_token.line,
