@@ -34,6 +34,11 @@ describe 'trailing_comma' do
             ],
           groupss => ['baz', 'qux'],
         }
+
+        File {
+          owner => root,
+          group => '0',
+        }
         EOS
       }
 
@@ -72,17 +77,23 @@ describe 'trailing_comma' do
             ],
           groupss => ['baz', 'qux'],
         }
+
+        File {
+          owner => root,
+          group => '0'
+        }
         EOS
       }
 
-      it 'should detect a single problem' do
-        expect(problems).to have(3).problems
+      it 'should detect 4 problems' do
+        expect(problems).to have(4).problems
       end
 
-      it 'should create a warning' do
+      it 'should create warnings' do
         expect(problems).to contain_warning(msg).on_line(3).in_column(32)
         expect(problems).to contain_warning(msg).on_line(10).in_column(27)
         expect(problems).to contain_warning(msg).on_line(24).in_column(18)
+        expect(problems).to contain_warning(msg).on_line(31).in_column(23)
       end
     end
   end
@@ -126,6 +137,11 @@ describe 'trailing_comma' do
             ],
           groupss => ['baz', 'qux'],
         }
+
+        File {
+          owner => root,
+          group => '0',
+        }
         EOS
       }
 
@@ -168,17 +184,23 @@ describe 'trailing_comma' do
             ],
           groupss => ['baz', 'qux'],
         }
+
+        File {
+          owner => root,
+          group => '0'
+        }
         EOS
       }
 
-      it 'should detect a single problem' do
-        expect(problems).to have(3).problems
+      it 'should detect 4 problems' do
+        expect(problems).to have(4).problems
       end
 
       it 'should create a warning' do
         expect(problems).to contain_fixed(msg).on_line(3).in_column(32)
         expect(problems).to contain_fixed(msg).on_line(10).in_column(27)
         expect(problems).to contain_fixed(msg).on_line(24).in_column(18)
+        expect(problems).to contain_fixed(msg).on_line(31).in_column(23)
       end
 
       it 'should add trailing commas' do
@@ -210,6 +232,11 @@ describe 'trailing_comma' do
             'bar',
             ],
           groupss => ['baz', 'qux'],
+        }
+
+        File {
+          owner => root,
+          group => '0',
         }
           EOS
         )

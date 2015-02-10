@@ -19,6 +19,28 @@ PuppetLint.new_check(:trailing_comma) do
     results
   end
 
+  def defaults_indexes
+    results = []
+    tokens.each_with_index do |token, token_idx|
+      if token.type == :CLASSREF && token.next_code_token && \
+         token.next_code_token.type == :LBRACE
+        real_idx = 0
+
+        tokens[token_idx+1..-1].each_with_index do |cur_token, cur_token_idx|
+          real_idx = token_idx + 1 + cur_token_idx
+          break if cur_token.type == :RBRACE
+        end
+
+        results << {
+          :start  => token_idx,
+          :end    => real_idx,
+          :tokens => tokens[token_idx..real_idx],
+        }
+      end
+    end
+    results
+  end
+
   def check_elem(elem)
     lbo_token = elem[:tokens][-1].prev_code_token
     if lbo_token && lbo_token.type != :COLON && \
@@ -43,6 +65,11 @@ PuppetLint.new_check(:trailing_comma) do
     # Arrays
     array_indexes.each do |array|
       check_elem(array)
+    end
+
+    # Defaults
+    defaults_indexes.each do |defaults|
+      check_elem(defaults)
     end
   end
 
