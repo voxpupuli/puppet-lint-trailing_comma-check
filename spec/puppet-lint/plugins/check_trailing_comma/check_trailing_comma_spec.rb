@@ -41,6 +41,14 @@ describe 'trailing_comma' do
           owner => root,
           group => '0',
         }
+
+        $foo = {
+          'bar' => {
+            baz  => 'abc',
+            bazz => 'def',
+          },
+          'qux' => 'ghi',
+        }
         EOS
       }
 
@@ -86,11 +94,19 @@ describe 'trailing_comma' do
           owner => root,
           group => '0'
         }
+
+        $foo = {
+          'bar' => {
+            baz  => 'abc',
+            bazz => 'def'
+          },
+          'qux' => 'ghi'
+        }
         EOS
       }
 
-      it 'should detect 4 problems' do
-        expect(problems).to have(4).problems
+      it 'should detect 6 problems' do
+        expect(problems).to have(6).problems
       end
 
       it 'should create warnings' do
@@ -98,6 +114,8 @@ describe 'trailing_comma' do
         expect(problems).to contain_warning(msg).on_line(10).in_column(27)
         expect(problems).to contain_warning(msg).on_line(24).in_column(18)
         expect(problems).to contain_warning(msg).on_line(33).in_column(23)
+        expect(problems).to contain_warning(msg).on_line(39).in_column(26)
+        expect(problems).to contain_warning(msg).on_line(41).in_column(25)
       end
     end
   end
@@ -148,6 +166,14 @@ describe 'trailing_comma' do
           owner => root,
           group => '0',
         }
+
+        $foo = {
+          'bar' => {
+            baz  => 'abc',
+            bazz => 'def',
+          },
+          'qux' => 'ghi',
+        }
         EOS
       }
 
@@ -197,11 +223,19 @@ describe 'trailing_comma' do
           owner => root,
           group => '0'
         }
+
+        $foo = {
+          'bar' => {
+            baz  => 'abc',
+            bazz => 'def'
+          },
+          'qux' => 'ghi'
+        }
         EOS
       }
 
-      it 'should detect 4 problems' do
-        expect(problems).to have(4).problems
+      it 'should detect 6 problems' do
+        expect(problems).to have(6).problems
       end
 
       it 'should create a warning' do
@@ -209,6 +243,8 @@ describe 'trailing_comma' do
         expect(problems).to contain_fixed(msg).on_line(10).in_column(27)
         expect(problems).to contain_fixed(msg).on_line(24).in_column(18)
         expect(problems).to contain_fixed(msg).on_line(33).in_column(23)
+        expect(problems).to contain_fixed(msg).on_line(39).in_column(26)
+        expect(problems).to contain_fixed(msg).on_line(41).in_column(25)
       end
 
       it 'should add trailing commas' do
@@ -247,6 +283,14 @@ describe 'trailing_comma' do
         File {
           owner => root,
           group => '0',
+        }
+
+        $foo = {
+          'bar' => {
+            baz  => 'abc',
+            bazz => 'def',
+          },
+          'qux' => 'ghi',
         }
           EOS
         )
