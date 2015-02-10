@@ -12,10 +12,14 @@ describe 'trailing_comma' do
           docroot => '/var/www',
         }
 
+        class{ '::nginx': }
+
         file { '/etc/fstab':
           ensure  => 'file',
           content => 'foo',
         }
+
+        file { '/tmp/foo': }
         EOS
       }
 
@@ -32,10 +36,14 @@ describe 'trailing_comma' do
           docroot => '/var/www'
         }
 
+        class{ '::nginx': }
+
         file { '/etc/fstab':
           ensure  => 'file',
           content => 'foo'
         }
+
+        file { '/tmp/foo': }
         EOS
       }
 
@@ -45,7 +53,7 @@ describe 'trailing_comma' do
 
       it 'should create a warning' do
         expect(problems).to contain_warning(msg).on_line(3).in_column(32)
-        expect(problems).to contain_warning(msg).on_line(8).in_column(27)
+        expect(problems).to contain_warning(msg).on_line(10).in_column(27)
       end
     end
   end
@@ -67,10 +75,14 @@ describe 'trailing_comma' do
           docroot => '/var/www',
         }
 
+        class{ '::nginx': }
+
         file { '/etc/fstab':
           ensure  => 'file',
           content => 'foo',
         }
+
+        file { '/tmp/foo': }
         EOS
       }
 
@@ -91,10 +103,14 @@ describe 'trailing_comma' do
           docroot => '/var/www'
         }
 
+        class{ '::nginx': }
+
         file { '/etc/fstab':
           ensure  => 'file',
           content => 'foo'
         }
+
+        file { '/tmp/foo': }
         EOS
       }
 
@@ -104,7 +120,7 @@ describe 'trailing_comma' do
 
       it 'should create a warning' do
         expect(problems).to contain_fixed(msg).on_line(3).in_column(32)
-        expect(problems).to contain_fixed(msg).on_line(8).in_column(27)
+        expect(problems).to contain_fixed(msg).on_line(10).in_column(27)
       end
 
       it 'should add trailing commas' do
@@ -115,10 +131,14 @@ describe 'trailing_comma' do
           docroot => '/var/www',
         }
 
+        class{ '::nginx': }
+
         file { '/etc/fstab':
           ensure  => 'file',
           content => 'foo',
         }
+
+        file { '/tmp/foo': }
           EOS
         )
       end
