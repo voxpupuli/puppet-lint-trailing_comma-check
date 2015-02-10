@@ -20,6 +20,10 @@ describe 'trailing_comma' do
         }
 
         file { '/tmp/foo': }
+
+        file { '/tmp/bar':
+           ensure => file;
+        }
         EOS
       }
 
@@ -44,6 +48,10 @@ describe 'trailing_comma' do
         }
 
         file { '/tmp/foo': }
+
+        file { '/tmp/bar':
+           ensure => file;
+        }
         EOS
       }
 
@@ -83,6 +91,10 @@ describe 'trailing_comma' do
         }
 
         file { '/tmp/foo': }
+
+        file { '/tmp/bar':
+           ensure => file;
+        }
         EOS
       }
 
@@ -111,6 +123,10 @@ describe 'trailing_comma' do
         }
 
         file { '/tmp/foo': }
+
+        file { '/tmp/bar':
+           ensure => file;
+        }
         EOS
       }
 
@@ -139,6 +155,10 @@ describe 'trailing_comma' do
         }
 
         file { '/tmp/foo': }
+
+        file { '/tmp/bar':
+           ensure => file;
+        }
           EOS
         )
       end
