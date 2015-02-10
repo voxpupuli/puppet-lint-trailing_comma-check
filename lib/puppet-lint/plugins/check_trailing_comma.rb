@@ -1,44 +1,48 @@
 PuppetLint.new_check(:trailing_comma) do
   def array_indexes
-    results = []
-    tokens.each_with_index do |token, token_idx|
-      if token.type == :LBRACK
-        real_idx = 0
-        tokens[token_idx+1..-1].each_with_index do |cur_token, cur_token_idx|
-          real_idx = token_idx + 1 + cur_token_idx
-          break if cur_token.type == :RBRACK
-        end
+    @array_indexes ||= Proc.new do
+      arrays = []
+      tokens.each_with_index do |token, token_idx|
+        if token.type == :LBRACK
+          real_idx = 0
+          tokens[token_idx+1..-1].each_with_index do |cur_token, cur_token_idx|
+            real_idx = token_idx + 1 + cur_token_idx
+            break if cur_token.type == :RBRACK
+          end
 
-        results << {
-          :start  => token_idx,
-          :end    => real_idx,
-          :tokens => tokens[token_idx..real_idx],
-        }
+          arrays << {
+            :start  => token_idx,
+            :end    => real_idx,
+            :tokens => tokens[token_idx..real_idx],
+          }
+        end
       end
-    end
-    results
+      arrays
+    end.call
   end
 
   def defaults_indexes
-    results = []
-    tokens.each_with_index do |token, token_idx|
-      if token.type == :CLASSREF && token.next_code_token && \
-         token.next_code_token.type == :LBRACE
-        real_idx = 0
+    @defaults_indexes ||= Proc.new do
+      defaults = []
+      tokens.each_with_index do |token, token_idx|
+        if token.type == :CLASSREF && token.next_code_token && \
+          token.next_code_token.type == :LBRACE
+          real_idx = 0
 
-        tokens[token_idx+1..-1].each_with_index do |cur_token, cur_token_idx|
-          real_idx = token_idx + 1 + cur_token_idx
-          break if cur_token.type == :RBRACE
+          tokens[token_idx+1..-1].each_with_index do |cur_token, cur_token_idx|
+            real_idx = token_idx + 1 + cur_token_idx
+            break if cur_token.type == :RBRACE
+          end
+
+          defaults << {
+            :start  => token_idx,
+            :end    => real_idx,
+            :tokens => tokens[token_idx..real_idx],
+          }
         end
-
-        results << {
-          :start  => token_idx,
-          :end    => real_idx,
-          :tokens => tokens[token_idx..real_idx],
-        }
       end
-    end
-    results
+      defaults
+    end.call
   end
 
   def check_elem(elem, except_type)
