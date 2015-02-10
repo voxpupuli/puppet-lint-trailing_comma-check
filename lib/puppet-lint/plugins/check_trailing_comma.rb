@@ -13,4 +13,16 @@ PuppetLint.new_check(:trailing_comma) do
       end
     end
   end
+
+  def fix(problem)
+    comma = PuppetLint::Lexer::Token.new(
+      :COMMA,
+      ',',
+      problem[:token].line,
+      problem[:token].column
+    )
+
+    idx = tokens.index(problem[:token])
+    tokens.insert(idx, comma)
+  end
 end
