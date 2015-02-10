@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'trailing_comma' do
-  let (:msg) { 'missing trailing comma after last parameter' }
+  let (:msg) { 'missing trailing comma after last element' }
 
   context 'with fix disabled' do
     context 'trailing comma present' do
@@ -26,6 +26,14 @@ describe 'trailing_comma' do
         }
 
         resources { 'sshkey': purge => true }
+
+        user { 'elmo':
+          groups => [
+            'foo',
+            'bar',
+            ],
+          groupss => ['baz', 'qux'],
+        }
         EOS
       }
 
@@ -56,16 +64,25 @@ describe 'trailing_comma' do
         }
 
         resources { 'sshkey': purge => true }
+
+        user { 'elmo':
+          groups  => [
+            'foo',
+            'bar'
+            ],
+          groupss => ['baz', 'qux'],
+        }
         EOS
       }
 
       it 'should detect a single problem' do
-        expect(problems).to have(2).problems
+        expect(problems).to have(3).problems
       end
 
       it 'should create a warning' do
         expect(problems).to contain_warning(msg).on_line(3).in_column(32)
         expect(problems).to contain_warning(msg).on_line(10).in_column(27)
+        expect(problems).to contain_warning(msg).on_line(24).in_column(18)
       end
     end
   end
@@ -101,6 +118,14 @@ describe 'trailing_comma' do
         }
 
         resources { 'sshkey': purge => true }
+
+        user { 'elmo':
+          groups => [
+            'foo',
+            'bar',
+            ],
+          groupss => ['baz', 'qux'],
+        }
         EOS
       }
 
@@ -135,16 +160,25 @@ describe 'trailing_comma' do
         }
 
         resources { 'sshkey': purge => true }
+
+        user { 'elmo':
+          groups => [
+            'foo',
+            'bar'
+            ],
+          groupss => ['baz', 'qux'],
+        }
         EOS
       }
 
       it 'should detect a single problem' do
-        expect(problems).to have(2).problems
+        expect(problems).to have(3).problems
       end
 
       it 'should create a warning' do
         expect(problems).to contain_fixed(msg).on_line(3).in_column(32)
         expect(problems).to contain_fixed(msg).on_line(10).in_column(27)
+        expect(problems).to contain_fixed(msg).on_line(24).in_column(18)
       end
 
       it 'should add trailing commas' do
@@ -169,6 +203,14 @@ describe 'trailing_comma' do
         }
 
         resources { 'sshkey': purge => true }
+
+        user { 'elmo':
+          groups => [
+            'foo',
+            'bar',
+            ],
+          groupss => ['baz', 'qux'],
+        }
           EOS
         )
       end
