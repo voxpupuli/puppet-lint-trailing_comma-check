@@ -33,6 +33,8 @@ describe 'trailing_comma' do
             'bar',
             ],
           groupss => ['baz', 'qux'],
+          groupz  => [
+          ],
         }
 
         File {
@@ -76,6 +78,8 @@ describe 'trailing_comma' do
             'bar'
             ],
           groupss => ['baz', 'qux'],
+          groupz  => [
+          ],
         }
 
         File {
@@ -93,7 +97,7 @@ describe 'trailing_comma' do
         expect(problems).to contain_warning(msg).on_line(3).in_column(32)
         expect(problems).to contain_warning(msg).on_line(10).in_column(27)
         expect(problems).to contain_warning(msg).on_line(24).in_column(18)
-        expect(problems).to contain_warning(msg).on_line(31).in_column(23)
+        expect(problems).to contain_warning(msg).on_line(33).in_column(23)
       end
     end
   end
@@ -136,6 +140,8 @@ describe 'trailing_comma' do
             'bar',
             ],
           groupss => ['baz', 'qux'],
+          groupz  => [
+          ],
         }
 
         File {
@@ -183,6 +189,8 @@ describe 'trailing_comma' do
             'bar'
             ],
           groupss => ['baz', 'qux'],
+          groupz  => [
+          ],
         }
 
         File {
@@ -200,7 +208,7 @@ describe 'trailing_comma' do
         expect(problems).to contain_fixed(msg).on_line(3).in_column(32)
         expect(problems).to contain_fixed(msg).on_line(10).in_column(27)
         expect(problems).to contain_fixed(msg).on_line(24).in_column(18)
-        expect(problems).to contain_fixed(msg).on_line(31).in_column(23)
+        expect(problems).to contain_fixed(msg).on_line(33).in_column(23)
       end
 
       it 'should add trailing commas' do
@@ -232,6 +240,8 @@ describe 'trailing_comma' do
             'bar',
             ],
           groupss => ['baz', 'qux'],
+          groupz  => [
+          ],
         }
 
         File {

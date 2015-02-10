@@ -41,9 +41,9 @@ PuppetLint.new_check(:trailing_comma) do
     results
   end
 
-  def check_elem(elem)
+  def check_elem(elem, except_type)
     lbo_token = elem[:tokens][-1].prev_code_token
-    if lbo_token && lbo_token.type != :COLON && \
+    if lbo_token && lbo_token.type != except_type && \
                     elem[:tokens][-1].type != :SEMIC && \
                     lbo_token.type != :COMMA && \
                     lbo_token.next_token.type == :NEWLINE
@@ -59,17 +59,17 @@ PuppetLint.new_check(:trailing_comma) do
   def check
     # Resource and class declarations
     resource_indexes.each do |resource|
-      check_elem(resource)
+      check_elem(resource, :COLON)
     end
 
     # Arrays
     array_indexes.each do |array|
-      check_elem(array)
+      check_elem(array, :LBRACK)
     end
 
     # Defaults
     defaults_indexes.each do |defaults|
-      check_elem(defaults)
+      check_elem(defaults, :LBRACE)
     end
   end
 
