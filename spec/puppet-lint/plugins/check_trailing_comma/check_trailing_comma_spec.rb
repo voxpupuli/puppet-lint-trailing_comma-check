@@ -49,6 +49,12 @@ describe 'trailing_comma' do
           },
           'qux' => 'ghi',
         }
+
+        service { 'bar':
+          subscribe => File[
+            '/etc/baz.conf', '/etc/baz.conf.d'
+             ],
+        }
         EOS
       }
 
@@ -101,6 +107,12 @@ describe 'trailing_comma' do
             bazz => 'def'
           },
           'qux' => 'ghi'
+        }
+
+        service { 'bar':
+          subscribe => File[
+            '/etc/baz.conf', '/etc/baz.conf.d'
+             ],
         }
         EOS
       }
@@ -174,6 +186,12 @@ describe 'trailing_comma' do
           },
           'qux' => 'ghi',
         }
+
+        service { 'bar':
+          subscribe => File[
+            '/etc/baz.conf', '/etc/baz.conf.d'
+             ],
+        }
         EOS
       }
 
@@ -230,6 +248,12 @@ describe 'trailing_comma' do
             bazz => 'def'
           },
           'qux' => 'ghi'
+        }
+
+        service { 'bar':
+          subscribe => File[
+            '/etc/baz.conf', '/etc/baz.conf.d'
+             ],
         }
         EOS
       }
@@ -291,6 +315,12 @@ describe 'trailing_comma' do
             bazz => 'def',
           },
           'qux' => 'ghi',
+        }
+
+        service { 'bar':
+          subscribe => File[
+            '/etc/baz.conf', '/etc/baz.conf.d'
+             ],
         }
           EOS
         )
