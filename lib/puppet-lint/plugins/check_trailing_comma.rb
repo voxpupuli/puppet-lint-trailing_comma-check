@@ -10,6 +10,9 @@ PuppetLint.new_check(:trailing_comma) do
             break if cur_token.type == :RBRACK
           end
 
+          # Ignore resource references
+          next if token.prev_code_token && \
+            token.prev_code_token.type == :CLASSREF
           arrays << {
             :start  => token_idx,
             :end    => real_idx,
@@ -96,9 +99,6 @@ PuppetLint.new_check(:trailing_comma) do
 
     # Arrays
     array_indexes.each do |array|
-      # Do not check resource references
-      next if array[:tokens][0].prev_code_token && \
-        array[:tokens][0].prev_code_token.type == :CLASSREF
       check_elem(array, :LBRACK)
     end
 
