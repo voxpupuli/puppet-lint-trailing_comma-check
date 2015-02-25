@@ -9,6 +9,19 @@ puppet-lint-trailing_comma-check
 
 A puppet-lint plugin to check for missing trailing commas.
 
+## Installing
+
+### From the command line
+
+```shell
+$ gem install puppet-lint-trailing_comma-check
+```
+
+### In a Gemfile
+
+```ruby
+gem 'puppet-lint-trailing_comma-check', :require => false
+```
 
 ## Checks
 
