@@ -66,6 +66,19 @@ describe 'trailing_comma' do
         if $var =~ Sensitive {
           $foo = $var.unwrap
         }
+
+        package { 'foo':
+          require => [
+            File[
+              '/etc/foo.conf',
+              '/etc/bar.conf'
+            ],
+            Packages[
+              'bar',
+              'baz'
+            ],
+          ],
+        }
         EOS
       }
 
@@ -125,11 +138,24 @@ describe 'trailing_comma' do
             '/etc/baz.conf', '/etc/baz.conf.d'
              ],
         }
+
+        package { 'foo':
+          require => [
+            File[
+              '/etc/foo.conf',
+              '/etc/bar.conf'
+            ],
+            Packages[
+              'bar',
+              'baz'
+            ]
+          ],
+        }
         EOS
       }
 
-      it 'should detect 6 problems' do
-        expect(problems).to have(6).problems
+      it 'should detect 7 problems' do
+        expect(problems).to have(7).problems
       end
 
       it 'should create warnings' do
@@ -139,6 +165,7 @@ describe 'trailing_comma' do
         expect(problems).to contain_warning(msg).on_line(33).in_column(23)
         expect(problems).to contain_warning(msg).on_line(39).in_column(26)
         expect(problems).to contain_warning(msg).on_line(41).in_column(25)
+        expect(problems).to contain_warning(msg).on_line(59).in_column(14)
       end
     end
   end
@@ -203,6 +230,19 @@ describe 'trailing_comma' do
             '/etc/baz.conf', '/etc/baz.conf.d'
              ],
         }
+
+        package { 'foo':
+          require => [
+            File[
+              '/etc/foo.conf',
+              '/etc/bar.conf'
+            ],
+            Packages[
+              'bar',
+              'baz'
+            ],
+          ],
+        }
         EOS
       }
 
@@ -266,11 +306,24 @@ describe 'trailing_comma' do
             '/etc/baz.conf', '/etc/baz.conf.d'
              ],
         }
+
+        package { 'foo':
+          require => [
+            File[
+              '/etc/foo.conf',
+              '/etc/bar.conf'
+            ],
+            Packages[
+              'bar',
+              'baz'
+            ]
+          ],
+        }
         EOS
       }
 
-      it 'should detect 6 problems' do
-        expect(problems).to have(6).problems
+      it 'should detect 7 problems' do
+        expect(problems).to have(7).problems
       end
 
       it 'should create a warning' do
@@ -280,6 +333,7 @@ describe 'trailing_comma' do
         expect(problems).to contain_fixed(msg).on_line(33).in_column(23)
         expect(problems).to contain_fixed(msg).on_line(39).in_column(26)
         expect(problems).to contain_fixed(msg).on_line(41).in_column(25)
+        expect(problems).to contain_fixed(msg).on_line(59).in_column(14)
       end
 
       it 'should add trailing commas' do
@@ -333,7 +387,20 @@ describe 'trailing_comma' do
             '/etc/baz.conf', '/etc/baz.conf.d'
              ],
         }
-          EOS
+
+        package { 'foo':
+          require => [
+            File[
+              '/etc/foo.conf',
+              '/etc/bar.conf'
+            ],
+            Packages[
+              'bar',
+              'baz'
+            ],
+          ],
+        }
+        EOS
         )
       end
     end
