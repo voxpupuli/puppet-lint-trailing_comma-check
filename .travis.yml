@@ -4,9 +4,11 @@ cache: bundler
 script:
 - bundle exec rake spec
 rvm:
-- 1.9.3
 - 2.0.0
-- 2.1.5
+- 2.1.10
+- 2.2.7
+- 2.3.4
+- 2.4.1
 matrix:
   fast_finish: true
 deploy:
@@ -14,7 +16,7 @@ deploy:
   api_key:
     secure: "Jkn4btEyx/4gczEedWCl/dDFd0GsSNZ2ZI7VsY2hUlLDyaRr4JIRNj8szg7FD5jANa7dGLIzaut8lwcp015E7Oif1dIKEs5Wm4YH/7lW5ol3uH0eIuZZk/JpA3/YudrSywzftZHzievIxFOmGHZiAG2Isl2POGD7u9dtRmkIVI0="
   on:
-    rvm: 2.1.5
+    rvm: 2.4.1
     tags: true
     all_branches: true
 notifications:
