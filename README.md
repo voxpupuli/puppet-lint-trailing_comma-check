@@ -1,11 +1,12 @@
 puppet-lint-trailing_comma-check
 =================================
 
-[![Build Status](https://img.shields.io/travis/puppet-community/puppet-lint-trailing_comma-check.svg)](https://travis-ci.org/puppet-community/puppet-lint-trailing_comma-check)
+[![License](https://img.shields.io/github/license/voxpupuli/puppet-lint-trailing_comma-check.svg)](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/travis/voxpupuli/puppet-lint-trailing_comma-check.svg)](https://travis-ci.org/voxpupuli/puppet-lint-trailing_comma-check)
 [![Gem Version](https://img.shields.io/gem/v/puppet-lint-trailing_comma-check.svg)](https://rubygems.org/gems/puppet-lint-trailing_comma-check)
 [![Gem Downloads](https://img.shields.io/gem/dt/puppet-lint-trailing_comma-check.svg)](https://rubygems.org/gems/puppet-lint-trailing_comma-check)
-[![Coverage Status](https://img.shields.io/coveralls/puppet-community/puppet-lint-trailing_comma-check.svg)](https://coveralls.io/r/puppet-community/puppet-lint-trailing_comma-check?branch=master)
-[![Gemnasium](https://img.shields.io/gemnasium/puppet-community/puppet-lint-trailing_comma-check.svg)](https://gemnasium.com/puppet-community/puppet-lint-trailing_comma-check)
+[![Coverage Status](https://coveralls.io/repos/github/voxpupuli/puppet-lint-trailing_comma-check/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-lint-trailing_comma-check?branch=master)
+[![Dependency Status](https://gemnasium.com/badges/github.com/voxpupuli/puppet-lint-trailing_comma-check.svg)](https://gemnasium.com/github.com/voxpupuli/puppet-lint-trailing_comma-check)
 [![Donated by Camptocamp](https://img.shields.io/badge/donated%20by-camptocamp-fb7047.svg)](#transfer-notice)
 
 A puppet-lint plugin to check for missing trailing commas.
