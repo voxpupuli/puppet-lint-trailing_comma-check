@@ -62,6 +62,10 @@ describe 'trailing_comma' do
         ) >> Mymod::Mytype {
           notice('foo')
         }
+
+        if $var =~ Sensitive {
+          $foo = $var.unwrap
+        }
         EOS
       }
 
