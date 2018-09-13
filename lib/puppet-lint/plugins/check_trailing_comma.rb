@@ -57,7 +57,10 @@ PuppetLint.new_check(:trailing_comma) do
       defaults = []
       tokens.each_with_index do |token, token_idx|
         if token.type == :CLASSREF && token.next_code_token && \
-          token.next_code_token.type == :LBRACE
+          token.next_code_token.type == :LBRACE && \
+          # Ensure that we aren't matching a function return type:
+          token.prev_code_token && \
+          token.prev_code_token.type != :RSHIFT
           real_idx = 0
 
           tokens[token_idx+1..-1].each_with_index do |cur_token, cur_token_idx|
