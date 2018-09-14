@@ -55,6 +55,17 @@ describe 'trailing_comma' do
             '/etc/baz.conf', '/etc/baz.conf.d'
              ],
         }
+
+        function myfunc (
+          Mymod::Mytype $arg1,
+          String[1] $arg2,
+        ) >> Mymod::Mytype {
+          notice('foo')
+        }
+
+        if $var =~ Sensitive {
+          $foo = $var.unwrap
+        }
         EOS
       }
 
