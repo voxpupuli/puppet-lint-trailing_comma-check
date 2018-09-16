@@ -141,6 +141,48 @@ describe 'trailing_comma' do
         expect(problems).to contain_warning(msg).on_line(41).in_column(25)
       end
     end
+
+    context 'with heredoc' do
+      context 'with trailing comma' do
+        let(:code) {
+          <<-EOS
+          file { '/tmp/test.txt':
+            ensure  => 'file',
+            content => @(EOT),
+              Hello
+              World
+              EOT
+          }
+          EOS
+        }
+
+        it 'should not detect any problems' do
+          expect(problems).to have(0).problems
+        end
+      end
+
+      context 'without trailing comma' do
+        let(:code) {
+          <<-EOS
+          file { '/tmp/test.txt':
+            ensure  => 'file',
+            content => @(EOT)
+              Hello
+              World
+            EOT
+          }
+          EOS
+        }
+
+        it 'should detect a problem' do
+          expect(problems).to have(1).problems
+        end
+
+        it 'should create a warning' do
+          expect(problems).to contain_warning(msg).on_line(3).in_column(30)
+        end
+      end
+    end
   end
 
   context 'with fix enabled' do
@@ -335,6 +377,66 @@ describe 'trailing_comma' do
         }
           EOS
         )
+      end
+    end
+
+    context 'with heredoc' do
+      context 'with trailing comma' do
+        let(:code) {
+          <<-EOS
+          file { '/tmp/test.txt':
+            ensure  => 'file',
+            content => @(EOT),
+              Hello
+              World
+              EOT
+          }
+          EOS
+        }
+
+        it 'should not detect any problems' do
+          expect(problems).to have(0).problems
+        end
+
+        it 'should not modify the manifest' do
+          expect(manifest).to eq(code)
+        end
+      end
+
+      context 'without trailing comma' do
+        let(:code) {
+          <<-EOS
+          file { '/tmp/test.txt':
+            ensure  => 'file',
+            content => @(EOT)
+              Hello
+              World
+            EOT
+          }
+          EOS
+        }
+
+        it 'should detect a problem' do
+          expect(problems).to have(1).problems
+        end
+
+        it 'should create a warning' do
+          expect(problems).to contain_fixed(msg).on_line(3).in_column(30)
+        end
+
+        it 'should add trailing commas' do
+          expect(manifest).to eq(
+            <<-EOS
+          file { '/tmp/test.txt':
+            ensure  => 'file',
+            content => @(EOT),
+              Hello
+              World
+            EOT
+          }
+          EOS
+          )
+        end
       end
     end
   end

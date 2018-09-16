@@ -86,6 +86,7 @@ PuppetLint.new_check(:trailing_comma) do
     if lbo_token && lbo_token.type != except_type && \
                     elem[:tokens][-1].type != :SEMIC && \
                     lbo_token.type != :COMMA && \
+                    lbo_token.type != :HEREDOC && \
                     lbo_token.next_token.type == :NEWLINE
       notify :warning, {
         :message => 'missing trailing comma after last element',
@@ -94,6 +95,17 @@ PuppetLint.new_check(:trailing_comma) do
         :token   => lbo_token.next_token,
       }
     end
+    if lbo_token && lbo_token.type == :HEREDOC && \
+        lbo_token.prev_code_token.type != :COMMA && \
+        lbo_token.prev_code_token.next_token.type == :NEWLINE
+      notify :warning, {
+        :message => 'missing trailing comma after last element',
+        :line    => lbo_token.prev_code_token.next_token.line,
+        :column  => lbo_token.prev_code_token.next_token.column,
+        :token   => lbo_token.prev_code_token.next_token,
+      }
+    end
+
   end
 
   def check
