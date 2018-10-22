@@ -83,10 +83,19 @@ PuppetLint.new_check(:trailing_comma) do
 
   def check_elem(elem, except_type)
     lbo_token = elem[:tokens][-1].prev_code_token
+
+    # If we get a token indicating the end of a HEREDOC, backtrack
+    # until we find HEREDOC_OPEN. That is the line which should
+    # be examined for the comma.
+    if lbo_token && [:HEREDOC, :HEREDOC_POST].include?(lbo_token.type)
+      while lbo_token && lbo_token.type != :HEREDOC_OPEN do
+        lbo_token = lbo_token.prev_code_token
+      end
+    end
+
     if lbo_token && lbo_token.type != except_type && \
                     elem[:tokens][-1].type != :SEMIC && \
                     lbo_token.type != :COMMA && \
-                    lbo_token.type != :HEREDOC && \
                     lbo_token.next_token.type == :NEWLINE
       notify :warning, {
         :message => 'missing trailing comma after last element',
@@ -95,17 +104,6 @@ PuppetLint.new_check(:trailing_comma) do
         :token   => lbo_token.next_token,
       }
     end
-    if lbo_token && lbo_token.type == :HEREDOC && \
-        lbo_token.prev_code_token.type != :COMMA && \
-        lbo_token.prev_code_token.next_token.type == :NEWLINE
-      notify :warning, {
-        :message => 'missing trailing comma after last element',
-        :line    => lbo_token.prev_code_token.next_token.line,
-        :column  => lbo_token.prev_code_token.next_token.column,
-        :token   => lbo_token.prev_code_token.next_token,
-      }
-    end
-
   end
 
   def check

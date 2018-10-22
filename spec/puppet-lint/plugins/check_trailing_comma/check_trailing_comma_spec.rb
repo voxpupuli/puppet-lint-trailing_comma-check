@@ -153,6 +153,15 @@ describe 'trailing_comma' do
               World
               EOT
           }
+
+          file { '/tmp/test2.txt':
+            ensure  => 'file',
+            content => @("FRAGMENT"),
+              ${var1}
+              some text
+              ${var2}
+              | FRAGMENT
+          }
           EOS
         }
 
@@ -171,15 +180,25 @@ describe 'trailing_comma' do
               World
             EOT
           }
+
+          file { '/tmp/test2.txt':
+            ensure  => 'file',
+            content => @("FRAGMENT")
+              ${var1}
+              some text
+              ${var2}
+              | FRAGMENT
+          }
           EOS
         }
 
         it 'should detect a problem' do
-          expect(problems).to have(1).problems
+          expect(problems).to have(2).problems
         end
 
         it 'should create a warning' do
           expect(problems).to contain_warning(msg).on_line(3).in_column(30)
+          expect(problems).to contain_warning(msg).on_line(11).in_column(37)
         end
       end
     end
@@ -391,6 +410,15 @@ describe 'trailing_comma' do
               World
               EOT
           }
+
+          file { '/tmp/test2.txt':
+            ensure  => 'file',
+            content => @("FRAGMENT"),
+              ${var1}
+              some text
+              ${var2}
+              | FRAGMENT
+          }
           EOS
         }
 
@@ -413,15 +441,25 @@ describe 'trailing_comma' do
               World
             EOT
           }
+
+          file { '/tmp/test2.txt':
+            ensure  => 'file',
+            content => @("FRAGMENT")
+              ${var1}
+              some text
+              ${var2}
+              | FRAGMENT
+          }
           EOS
         }
 
         it 'should detect a problem' do
-          expect(problems).to have(1).problems
+          expect(problems).to have(2).problems
         end
 
         it 'should create a warning' do
           expect(problems).to contain_fixed(msg).on_line(3).in_column(30)
+          expect(problems).to contain_fixed(msg).on_line(11).in_column(37)
         end
 
         it 'should add trailing commas' do
@@ -433,6 +471,15 @@ describe 'trailing_comma' do
               Hello
               World
             EOT
+          }
+
+          file { '/tmp/test2.txt':
+            ensure  => 'file',
+            content => @("FRAGMENT"),
+              ${var1}
+              some text
+              ${var2}
+              | FRAGMENT
           }
           EOS
           )
