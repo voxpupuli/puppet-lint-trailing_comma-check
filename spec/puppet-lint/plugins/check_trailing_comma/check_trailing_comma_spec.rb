@@ -66,6 +66,10 @@ describe 'trailing_comma' do
         if $var =~ Sensitive {
           $foo = $var.unwrap
         }
+
+        if $var !~ Mymodule::MyType {
+          fail("encountered error ${err}")
+        }
         EOS
       }
 
