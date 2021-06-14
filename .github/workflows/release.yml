@@ -10,10 +10,10 @@ jobs:
     if: github.repository == 'voxpupuli/puppet-lint-trailing_comma-check'
     steps:
       - uses: actions/checkout@v2
-      - name: Install Ruby 2.7
+      - name: Install Ruby 3.0
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: '3.0'
       - name: Build gem
         run: gem build *.gemspec
       - name: Publish gem to rubygems.org
