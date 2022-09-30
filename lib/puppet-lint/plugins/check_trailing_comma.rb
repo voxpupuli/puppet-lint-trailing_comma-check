@@ -13,6 +13,11 @@ PuppetLint.new_check(:trailing_comma) do
           # Ignore resource references
           next if token.prev_code_token && \
             token.prev_code_token.type == :CLASSREF
+
+          # Ignore data types
+          next if token.prev_code_token && \
+            token.prev_code_token.type == :TYPE
+
           arrays << {
             :start  => token_idx,
             :end    => real_idx,
