@@ -13,12 +13,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby:
-          - "2.4"
-          - "2.5"
-          - "2.6"
-          - "2.7"
-          - "3.0"
+        include:
+          - ruby: "2.4"
+          - ruby: "2.5"
+          - ruby: "2.6"
+          - ruby: "2.7"
+          - ruby: "3.0"
+          - ruby: "3.1"
+            coverage: "yes"
+    env:
+      COVERAGE: ${{ matrix.coverage }}
+    name: Ruby ${{ matrix.ruby }}
     steps:
       - uses: actions/checkout@v2
       - name: Install Ruby ${{ matrix.ruby }}
@@ -28,3 +33,5 @@ jobs:
           bundler-cache: true
       - name: Run tests
         run: bundle exec rake spec
+      - name: Verify gem builds
+        run: gem build *.gemspec
