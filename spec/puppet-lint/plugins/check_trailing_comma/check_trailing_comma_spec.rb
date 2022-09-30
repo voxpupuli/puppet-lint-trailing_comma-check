@@ -10,6 +10,11 @@ describe 'trailing_comma' do
         class { '::apache':
           timeout => '100',
           docroot => '/var/www',
+          Enum[
+            'a',
+            'b',
+            'c'
+          ] $test = 'c',
         }
 
         class{ '::nginx': }
@@ -70,6 +75,12 @@ describe 'trailing_comma' do
         if $var !~ Mymodule::MyType {
           fail("encountered error ${err}")
         }
+
+        $test = [
+          'a',
+          'b',
+          'c',
+        ],
         EOS
       }
 
@@ -83,7 +94,12 @@ describe 'trailing_comma' do
         <<-EOS
         class { '::apache':
           timeout => '100',
-          docroot => '/var/www'
+          docroot => '/var/www',
+          Enum[
+            'a',
+            'b',
+            'c'
+          ] $test = 'c'
         }
 
         class{ '::nginx': }
@@ -129,20 +145,27 @@ describe 'trailing_comma' do
             '/etc/baz.conf', '/etc/baz.conf.d'
              ],
         }
+
+        $test = [
+          'a',
+          'b',
+          'c'
+        ]
         EOS
       }
 
-      it 'should detect 6 problems' do
-        expect(problems).to have(6).problems
+      it 'should detect 7 problems' do
+        expect(problems).to have(7).problems
       end
 
       it 'should create warnings' do
-        expect(problems).to contain_warning(msg).on_line(3).in_column(32)
-        expect(problems).to contain_warning(msg).on_line(10).in_column(27)
-        expect(problems).to contain_warning(msg).on_line(24).in_column(18)
-        expect(problems).to contain_warning(msg).on_line(33).in_column(23)
-        expect(problems).to contain_warning(msg).on_line(39).in_column(26)
-        expect(problems).to contain_warning(msg).on_line(41).in_column(25)
+        expect(problems).to contain_warning(msg).on_line(8).in_column(24)
+        expect(problems).to contain_warning(msg).on_line(15).in_column(27)
+        expect(problems).to contain_warning(msg).on_line(29).in_column(18)
+        expect(problems).to contain_warning(msg).on_line(38).in_column(23)
+        expect(problems).to contain_warning(msg).on_line(44).in_column(26)
+        expect(problems).to contain_warning(msg).on_line(46).in_column(25)
+        expect(problems).to contain_warning(msg).on_line(58).in_column(14)
       end
     end
 
@@ -223,6 +246,11 @@ describe 'trailing_comma' do
         class { '::apache':
           timeout => '100',
           docroot => '/var/www',
+          Enum[
+            'a',
+            'b',
+            'c'
+          ] $test = 'c',
         }
 
         class{ '::nginx': }
@@ -268,6 +296,12 @@ describe 'trailing_comma' do
             '/etc/baz.conf', '/etc/baz.conf.d'
              ],
         }
+
+        $test = [
+          'a',
+          'b',
+          'c',
+        ],
         EOS
       }
 
@@ -285,7 +319,12 @@ describe 'trailing_comma' do
         <<-EOS
         class { '::apache':
           timeout => '100',
-          docroot => '/var/www'
+          docroot => '/var/www',
+          Enum[
+            'a',
+            'b',
+            'c'
+          ] $test = 'c'
         }
 
         class{ '::nginx': }
@@ -331,20 +370,27 @@ describe 'trailing_comma' do
             '/etc/baz.conf', '/etc/baz.conf.d'
              ],
         }
+
+        $test = [
+          'a',
+          'b',
+          'c'
+        ]
         EOS
       }
 
-      it 'should detect 6 problems' do
-        expect(problems).to have(6).problems
+      it 'should detect 7 problems' do
+        expect(problems).to have(7).problems
       end
 
       it 'should create a warning' do
-        expect(problems).to contain_fixed(msg).on_line(3).in_column(32)
-        expect(problems).to contain_fixed(msg).on_line(10).in_column(27)
-        expect(problems).to contain_fixed(msg).on_line(24).in_column(18)
-        expect(problems).to contain_fixed(msg).on_line(33).in_column(23)
-        expect(problems).to contain_fixed(msg).on_line(39).in_column(26)
-        expect(problems).to contain_fixed(msg).on_line(41).in_column(25)
+        expect(problems).to contain_fixed(msg).on_line(8).in_column(24)
+        expect(problems).to contain_fixed(msg).on_line(15).in_column(27)
+        expect(problems).to contain_fixed(msg).on_line(29).in_column(18)
+        expect(problems).to contain_fixed(msg).on_line(38).in_column(23)
+        expect(problems).to contain_fixed(msg).on_line(44).in_column(26)
+        expect(problems).to contain_fixed(msg).on_line(46).in_column(25)
+        expect(problems).to contain_fixed(msg).on_line(58).in_column(14)
       end
 
       it 'should add trailing commas' do
@@ -353,6 +399,11 @@ describe 'trailing_comma' do
         class { '::apache':
           timeout => '100',
           docroot => '/var/www',
+          Enum[
+            'a',
+            'b',
+            'c'
+          ] $test = 'c',
         }
 
         class{ '::nginx': }
@@ -398,7 +449,13 @@ describe 'trailing_comma' do
             '/etc/baz.conf', '/etc/baz.conf.d'
              ],
         }
-          EOS
+
+        $test = [
+          'a',
+          'b',
+          'c',
+        ]
+        EOS
         )
       end
     end
