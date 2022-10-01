@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
     A puppet-lint plugin to check for missing trailing commas.
   EOF
 
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.0".freeze)
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.7".freeze)
 
   spec.add_dependency             'puppet-lint', '>= 1.0', '< 3.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
