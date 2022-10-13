@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'puppet-lint-trailing_comma-check'
-  spec.version     = '0.4.2'
+  spec.version     = '0.4.3'
   spec.homepage    = 'https://github.com/voxpupuli/puppet-lint-trailing_comma-check'
   spec.license     = 'Apache-2.0'
   spec.author      = 'Vox Pupuli'
