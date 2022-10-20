@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe 'trailing_comma' do
-  let (:msg) { 'missing trailing comma after last element' }
+  let(:msg) { 'missing trailing comma after last element' }
 
   context 'with fix disabled' do
     context 'trailing comma present' do
-      let (:code) {
+      let(:code) do
         <<-EOS
         class { '::apache':
           timeout => '100',
@@ -82,15 +82,15 @@ describe 'trailing_comma' do
           'c',
         ],
         EOS
-      }
+      end
 
-      it 'should not detect any problems' do
+      it 'does not detect any problems' do
         expect(problems).to have(0).problems
       end
     end
 
     context 'trailing comma absent' do
-      let (:code) {
+      let(:code) do
         <<-EOS
         class { '::apache':
           timeout => '100',
@@ -152,13 +152,13 @@ describe 'trailing_comma' do
           'c'
         ]
         EOS
-      }
+      end
 
-      it 'should detect 7 problems' do
+      it 'detects 7 problems' do
         expect(problems).to have(7).problems
       end
 
-      it 'should create warnings' do
+      it 'creates warnings' do
         expect(problems).to contain_warning(msg).on_line(8).in_column(24)
         expect(problems).to contain_warning(msg).on_line(15).in_column(27)
         expect(problems).to contain_warning(msg).on_line(29).in_column(18)
@@ -171,7 +171,7 @@ describe 'trailing_comma' do
 
     context 'with heredoc' do
       context 'with trailing comma' do
-        let(:code) {
+        let(:code) do
           <<-EOS
           file { '/tmp/test.txt':
             ensure  => 'file',
@@ -190,15 +190,15 @@ describe 'trailing_comma' do
               | FRAGMENT
           }
           EOS
-        }
+        end
 
-        it 'should not detect any problems' do
+        it 'does not detect any problems' do
           expect(problems).to have(0).problems
         end
       end
 
       context 'without trailing comma' do
-        let(:code) {
+        let(:code) do
           <<-EOS
           file { '/tmp/test.txt':
             ensure  => 'file',
@@ -217,13 +217,13 @@ describe 'trailing_comma' do
               | FRAGMENT
           }
           EOS
-        }
+        end
 
-        it 'should detect a problem' do
+        it 'detects a problem' do
           expect(problems).to have(2).problems
         end
 
-        it 'should create a warning' do
+        it 'creates a warning' do
           expect(problems).to contain_warning(msg).on_line(3).in_column(30)
           expect(problems).to contain_warning(msg).on_line(11).in_column(37)
         end
@@ -232,16 +232,16 @@ describe 'trailing_comma' do
   end
 
   context 'with fix enabled' do
-    before do
+    before(:each) do
       PuppetLint.configuration.fix = true
     end
 
-    after do
+    after(:each) do
       PuppetLint.configuration.fix = false
     end
 
     context 'trailing comma present' do
-      let (:code) {
+      let(:code) do
         <<-EOS
         class { '::apache':
           timeout => '100',
@@ -303,19 +303,19 @@ describe 'trailing_comma' do
           'c',
         ],
         EOS
-      }
+      end
 
-      it 'should not detect any problems' do
+      it 'does not detect any problems' do
         expect(problems).to have(0).problems
       end
 
-      it 'should not modify the manifest' do
+      it 'does not modify the manifest' do
         expect(manifest).to eq(code)
       end
     end
 
     context 'trailing comma absent' do
-      let (:code) {
+      let(:code) do
         <<-EOS
         class { '::apache':
           timeout => '100',
@@ -377,13 +377,13 @@ describe 'trailing_comma' do
           'c'
         ]
         EOS
-      }
+      end
 
-      it 'should detect 7 problems' do
+      it 'detects 7 problems' do
         expect(problems).to have(7).problems
       end
 
-      it 'should create a warning' do
+      it 'creates a warning' do
         expect(problems).to contain_fixed(msg).on_line(8).in_column(24)
         expect(problems).to contain_fixed(msg).on_line(15).in_column(27)
         expect(problems).to contain_fixed(msg).on_line(29).in_column(18)
@@ -393,9 +393,9 @@ describe 'trailing_comma' do
         expect(problems).to contain_fixed(msg).on_line(58).in_column(14)
       end
 
-      it 'should add trailing commas' do
+      it 'adds trailing commas' do
         expect(manifest).to eq(
-          <<-EOS
+          <<-EOS,
         class { '::apache':
           timeout => '100',
           docroot => '/var/www',
@@ -462,7 +462,7 @@ describe 'trailing_comma' do
 
     context 'with heredoc' do
       context 'with trailing comma' do
-        let(:code) {
+        let(:code) do
           <<-EOS
           file { '/tmp/test.txt':
             ensure  => 'file',
@@ -481,19 +481,19 @@ describe 'trailing_comma' do
               | FRAGMENT
           }
           EOS
-        }
+        end
 
-        it 'should not detect any problems' do
+        it 'does not detect any problems' do
           expect(problems).to have(0).problems
         end
 
-        it 'should not modify the manifest' do
+        it 'does not modify the manifest' do
           expect(manifest).to eq(code)
         end
       end
 
       context 'without trailing comma' do
-        let(:code) {
+        let(:code) do
           <<-EOS
           file { '/tmp/test.txt':
             ensure  => 'file',
@@ -512,20 +512,20 @@ describe 'trailing_comma' do
               | FRAGMENT
           }
           EOS
-        }
+        end
 
-        it 'should detect a problem' do
+        it 'detects a problem' do
           expect(problems).to have(2).problems
         end
 
-        it 'should create a warning' do
+        it 'creates a warning' do
           expect(problems).to contain_fixed(msg).on_line(3).in_column(30)
           expect(problems).to contain_fixed(msg).on_line(11).in_column(37)
         end
 
-        it 'should add trailing commas' do
+        it 'adds trailing commas' do
           expect(manifest).to eq(
-            <<-EOS
+            <<-EOS,
           file { '/tmp/test.txt':
             ensure  => 'file',
             content => @(EOT),
