@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/tree/1.0.0) (2022-11-29)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/compare/0.4.3...1.0.0)
+
+**Implemented enhancements:**
+
+- puppet-lint: Allow 3.x [\#29](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/pull/29) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [0.4.3](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/tree/0.4.3) (2022-10-13)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/compare/0.4.2...0.4.3)
