@@ -1,86 +1,87 @@
 PuppetLint.new_check(:trailing_comma) do
   def array_indexes
-    @array_indexes ||= Proc.new do
+    @array_indexes ||= proc do
       arrays = []
       tokens.each_with_index do |token, token_idx|
-        if token.type == :LBRACK
-          real_idx = 0
-          tokens[token_idx+1..-1].each_with_index do |cur_token, cur_token_idx|
-            real_idx = token_idx + 1 + cur_token_idx
-            break if cur_token.type == :RBRACK
-          end
+        next unless token.type == :LBRACK
 
-          # Ignore resource references
-          next if token.prev_code_token && \
-            token.prev_code_token.type == :CLASSREF
-
-          # Ignore data types
-          next if token.prev_code_token && \
-            token.prev_code_token.type == :TYPE
-
-          arrays << {
-            :start  => token_idx,
-            :end    => real_idx,
-            :tokens => tokens[token_idx..real_idx],
-          }
+        real_idx = 0
+        tokens[token_idx + 1..-1].each_with_index do |cur_token, cur_token_idx|
+          real_idx = token_idx + 1 + cur_token_idx
+          break if cur_token.type == :RBRACK
         end
+
+        # Ignore resource references
+        next if token.prev_code_token &&
+                token.prev_code_token.type == :CLASSREF
+
+        # Ignore data types
+        next if token.prev_code_token &&
+                token.prev_code_token.type == :TYPE
+
+        arrays << {
+          start: token_idx,
+          end: real_idx,
+          tokens: tokens[token_idx..real_idx],
+        }
       end
       arrays
     end.call
   end
 
   def hash_indexes
-    @hash_indexes ||= Proc.new do
+    @hash_indexes ||= proc do
       hashes = []
       tokens.each_with_index do |token, token_idx|
         next unless token.prev_code_token
-        next unless [:EQUALS, :ISEQUAL, :FARROW, :LPAREN].include? token.prev_code_token.type
-        if token.type == :LBRACE
-          level = 0
-          real_idx = 0
-          tokens[token_idx+1..-1].each_with_index do |cur_token, cur_token_idx|
-            real_idx = token_idx + 1 + cur_token_idx
+        next unless %i[EQUALS ISEQUAL FARROW LPAREN].include? token.prev_code_token.type
 
-            level += 1 if cur_token.type == :LBRACE
-            level -= 1 if cur_token.type == :RBRACE
-            break if level < 0
-          end
+        next unless token.type == :LBRACE
 
-          hashes << {
-            :start  => token_idx,
-            :end    => real_idx,
-            :tokens => tokens[token_idx..real_idx],
-          }
+        level = 0
+        real_idx = 0
+        tokens[token_idx + 1..-1].each_with_index do |cur_token, cur_token_idx|
+          real_idx = token_idx + 1 + cur_token_idx
+
+          level += 1 if cur_token.type == :LBRACE
+          level -= 1 if cur_token.type == :RBRACE
+          break if level < 0
         end
+
+        hashes << {
+          start: token_idx,
+          end: real_idx,
+          tokens: tokens[token_idx..real_idx],
+        }
       end
       hashes
     end.call
   end
 
   def defaults_indexes
-    @defaults_indexes ||= Proc.new do
+    @defaults_indexes ||= proc do
       defaults = []
       tokens.each_with_index do |token, token_idx|
-        if token.type == :CLASSREF && token.next_code_token && \
-          token.next_code_token.type == :LBRACE && \
-          token.prev_code_token && \
-          # Ensure that we aren't matching a function return type:
-          token.prev_code_token.type != :RSHIFT && \
-          # Or a conditional matching a type:
-          ! [:MATCH, :NOMATCH].include?(token.prev_code_token.type)
-          real_idx = 0
+        next unless token.type == :CLASSREF && token.next_code_token &&
+                    token.next_code_token.type == :LBRACE &&
+                    token.prev_code_token &&
+                    # Ensure that we aren't matching a function return type:
+                    token.prev_code_token.type != :RSHIFT &&
+                    # Or a conditional matching a type:
+                    !%i[MATCH NOMATCH].include?(token.prev_code_token.type)
 
-          tokens[token_idx+1..-1].each_with_index do |cur_token, cur_token_idx|
-            real_idx = token_idx + 1 + cur_token_idx
-            break if cur_token.type == :RBRACE
-          end
+        real_idx = 0
 
-          defaults << {
-            :start  => token_idx,
-            :end    => real_idx,
-            :tokens => tokens[token_idx..real_idx],
-          }
+        tokens[token_idx + 1..-1].each_with_index do |cur_token, cur_token_idx|
+          real_idx = token_idx + 1 + cur_token_idx
+          break if cur_token.type == :RBRACE
         end
+
+        defaults << {
+          start: token_idx,
+          end: real_idx,
+          tokens: tokens[token_idx..real_idx],
+        }
       end
       defaults
     end.call
@@ -92,21 +93,19 @@ PuppetLint.new_check(:trailing_comma) do
     # If we get a token indicating the end of a HEREDOC, backtrack
     # until we find HEREDOC_OPEN. That is the line which should
     # be examined for the comma.
-    if lbo_token && [:HEREDOC, :HEREDOC_POST].include?(lbo_token.type)
-      while lbo_token && lbo_token.type != :HEREDOC_OPEN do
-        lbo_token = lbo_token.prev_code_token
-      end
+    if lbo_token && %i[HEREDOC HEREDOC_POST].include?(lbo_token.type)
+      lbo_token = lbo_token.prev_code_token while lbo_token && lbo_token.type != :HEREDOC_OPEN
     end
 
-    if lbo_token && lbo_token.type != except_type && \
-                    elem[:tokens][-1].type != :SEMIC && \
-                    lbo_token.type != :COMMA && \
-                    lbo_token.next_token.type == :NEWLINE
+    if lbo_token && lbo_token.type != except_type &&
+       elem[:tokens][-1].type != :SEMIC &&
+       lbo_token.type != :COMMA &&
+       lbo_token.next_token.type == :NEWLINE
       notify :warning, {
-        :message => 'missing trailing comma after last element',
-        :line    => lbo_token.next_token.line,
-        :column  => lbo_token.next_token.column,
-        :token   => lbo_token.next_token,
+        message: 'missing trailing comma after last element',
+        line: lbo_token.next_token.line,
+        column: lbo_token.next_token.column,
+        token: lbo_token.next_token,
       }
     end
   end
@@ -138,7 +137,7 @@ PuppetLint.new_check(:trailing_comma) do
       :COMMA,
       ',',
       problem[:token].line,
-      problem[:token].column
+      problem[:token].column,
     )
 
     idx = tokens.index(problem[:token])
