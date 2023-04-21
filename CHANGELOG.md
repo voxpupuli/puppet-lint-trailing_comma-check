@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/tree/2.0.0) (2023-04-21)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/compare/1.0.0...2.0.0)
+
+**Breaking changes:**
+
+- Drop Ruby \< 2.7; Add RuboCop [\#33](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/pull/33) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [1.0.0](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/tree/1.0.0) (2022-11-29)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/compare/0.4.3...1.0.0)
