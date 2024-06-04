@@ -40,6 +40,15 @@ file { '/etc/sudoers':
 }
 ```
 
+```puppet
+file { '/etc/file':
+  ensure  => file,
+  content => @(EOF)
+  Content
+  | EOF
+}
+```
+
 #### What you should have done
 
 ```puppet
@@ -48,6 +57,14 @@ file { '/etc/sudoers':
 }
 ```
 
+```puppet
+file { '/etc/file':
+  ensure  => file,
+  content => @(EOF),
+  Content
+  | EOF
+}
+```
 
 #### Disabling the check
 
