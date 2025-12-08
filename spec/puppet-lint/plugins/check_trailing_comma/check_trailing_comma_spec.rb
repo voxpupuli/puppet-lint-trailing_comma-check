@@ -167,6 +167,31 @@ describe 'trailing_comma' do
         expect(problems).to contain_warning(msg).on_line(46).in_column(25)
         expect(problems).to contain_warning(msg).on_line(58).in_column(14)
       end
+
+      context 'with nested arrays' do
+        let(:code) do
+          <<~EOS
+            class { 'myclass':
+              directives => [
+                 {
+                    directives => [
+                      'if net = 0.0.0.0/0 then reject',
+                      'else accept'
+                    ],
+                 },
+              ],
+            }
+          EOS
+        end
+
+        it 'detects 1 problem' do
+          expect(problems).to have(1).problems
+        end
+
+        it 'creates a warning' do
+          expect(problems).to contain_warning(msg).on_line(6).in_column(24)
+        end
+      end
     end
 
     context 'with heredoc' do
@@ -457,6 +482,44 @@ describe 'trailing_comma' do
         ]
         EOS
         )
+      end
+
+      context 'with nested arrays' do
+        let(:code) do
+          <<~EOS
+            class { 'myclass':
+              directives => [
+                 {
+                    directives => [
+                      'if net = 0.0.0.0/0 then reject',
+                      'else accept'
+                    ],
+                 },
+              ],
+            }
+          EOS
+        end
+
+        it 'detects 1 problem' do
+          expect(problems).to have(1).problems
+        end
+
+        it 'adds single trailing comma' do
+          expect(manifest).to eq(
+            <<~EOS,
+              class { 'myclass':
+                directives => [
+                   {
+                      directives => [
+                        'if net = 0.0.0.0/0 then reject',
+                        'else accept',
+                      ],
+                   },
+                ],
+              }
+            EOS
+          )
+        end
       end
     end
 

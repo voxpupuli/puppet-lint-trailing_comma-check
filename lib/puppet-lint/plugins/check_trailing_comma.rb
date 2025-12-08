@@ -5,10 +5,14 @@ PuppetLint.new_check(:trailing_comma) do
       tokens.each_with_index do |token, token_idx|
         next unless token.type == :LBRACK
 
+        level = 0
         real_idx = 0
         tokens[token_idx + 1..-1].each_with_index do |cur_token, cur_token_idx|
           real_idx = token_idx + 1 + cur_token_idx
-          break if cur_token.type == :RBRACK
+
+          level += 1 if cur_token.type == :LBRACK
+          level -= 1 if cur_token.type == :RBRACK
+          break if level < 0
         end
 
         # Ignore resource references
